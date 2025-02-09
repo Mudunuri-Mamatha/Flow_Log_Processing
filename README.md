@@ -26,7 +26,7 @@ The tool handles large files efficiently and requires minimal setup.
 Save the Python script to your working directory as `flow_log_processor.py`.
 
 ### **2. Prepare Input Files**
-Ensure you have the following input files:
+Ensure you download the following input files in the same directory:
 
 #### **`lookup.csv`**
 A CSV file with the following format:
@@ -40,6 +40,10 @@ dstport,protocol,tag
 
 #### **`flow_logs.txt`**
 A text file containing AWS VPC flow logs in the following format:
+
+version account-id interface-id srcaddr dstaddr srcport dstport protocol packets bytes start end action log-status
+
+For example:
 
 2 123456789012 eni-0a1b2c3d 10.0.1.201 198.51.100.2 443 49153 6 25 20000 1620140761 1620140821 ACCEPT OK
 2 123456789012 eni-4d3c2b1a 192.168.1.100 203.0.113.101 23 49154 6 15 12000 1620140761 1620140821 REJECT OK
