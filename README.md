@@ -155,7 +155,7 @@ For any questions or issues, ensure the lookup table and flow log files follow t
 
 
 
-## **🚀 Better approach suggestions **
+## 🚀 Better approach suggestions 
 
 ### **1️⃣ Performance Optimization for Large-Scale Data**
 - The current approach works well for files **up to 10MB**, but what if you need to process **GB-scale flow logs**?
@@ -173,8 +173,8 @@ def process_large_flow_logs(file_path, lookup_dict):
 ```
 
 🔹 Why?
-✅ Reduces RAM usage → Handles GB-scale logs
-✅ Boosts performance by avoiding unnecessary string operations
+- ✅ Reduces RAM usage → Handles GB-scale logs
+- ✅ Boosts performance by avoiding unnecessary string operations
 
 ### **2️⃣ Parallel & Multi-Threaded Processing**
 - Since **flow logs are independent rows**, they can be **processed in parallel** using **multi-threading (for I/O-bound tasks)** or **multiprocessing (for CPU-bound tasks).**
@@ -191,8 +191,8 @@ def process_flow_logs_parallel(flow_file, lookup_dict):
 ```
 
 🔹 Why?
-✅ Makes use of multiple CPU cores
-✅ Can process millions of logs faster
+- ✅ Makes use of multiple CPU cores
+- ✅ Can process millions of logs faster
 
 ### **3️⃣ Using a Trie for Fast Lookup (instead of a Dictionary)**
 - If the `lookup.csv` file has **10,000+ mappings**, dictionary lookups **can slow down** as it grows.
@@ -233,8 +233,8 @@ print(lookup_trie.search("443", "tcp"))  # Output: web
 ```
 
 🔹 Why?
-✅ Faster than dictionary lookups for large datasets
-✅ Memory-efficient when there are many shared prefixes
+- ✅ Faster than dictionary lookups for large datasets
+- ✅ Memory-efficient when there are many shared prefixes
 
 ### **4️⃣ Leveraging a Database Instead of In-Memory Lookups**
 - Instead of keeping everything in **RAM**, use an **indexed database** for **quick searches**.
@@ -268,8 +268,8 @@ def fetch_tag(port, protocol):
 ```
 
 🔹 Why?
-✅ Scalable for millions of mappings
-✅ Persistent storage instead of memory-based dictionaries
+- ✅ Scalable for millions of mappings
+- ✅ Persistent storage instead of memory-based dictionaries
 
 ### **5️⃣ Advanced Tagging Using Machine Learning**
 🚀 **Take this problem to the next level by implementing a Machine Learning model for tagging!**  
@@ -299,5 +299,5 @@ print(predicted_tag)
 ```
 
 🔹 Why?
-✅ Learns patterns from historical data
-✅ Can predict new unseen tags without lookup files
+- ✅ Learns patterns from historical data
+- ✅ Can predict new unseen tags without lookup files
