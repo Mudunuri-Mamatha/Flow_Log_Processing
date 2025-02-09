@@ -155,13 +155,13 @@ For any questions or issues, ensure the lookup table and flow log files follow t
 
 
 
-## 🚀 Better approach suggestions 
+##  Better approach suggestions 
 
-### **1️⃣ Performance Optimization for Large-Scale Data**
+### **1. Performance Optimization for Large-Scale Data**
 - The current approach works well for files **up to 10MB**, but what if you need to process **GB-scale flow logs**?
 - **Optimized Approach:** Instead of reading the file line by line into memory, **stream the file** in chunks using **memory-mapped files (mmap)** or **iterative processing with generators**.
 
-🔹 **How?** Use `mmap` for ultra-fast file reading:
+ **How?** Use `mmap` for ultra-fast file reading:
 ```python
 import mmap
 
@@ -172,15 +172,15 @@ def process_large_flow_logs(file_path, lookup_dict):
                 process_line(line.decode().strip(), lookup_dict)
 ```
 
-🔹 Why?
-- ✅ Reduces RAM usage → Handles GB-scale logs
-- ✅ Boosts performance by avoiding unnecessary string operations
+ Why?
+-  Reduces RAM usage → Handles GB-scale logs
+-  Boosts performance by avoiding unnecessary string operations
 
-### **2️⃣ Parallel & Multi-Threaded Processing**
+### **2. Parallel & Multi-Threaded Processing**
 - Since **flow logs are independent rows**, they can be **processed in parallel** using **multi-threading (for I/O-bound tasks)** or **multiprocessing (for CPU-bound tasks).**
 - **Optimized Approach:** Use `concurrent.futures.ThreadPoolExecutor` to read files in parallel.
 
-🔹 **How?** Using a thread pool:
+ **How?** Using a thread pool:
 ```python
 from concurrent.futures import ThreadPoolExecutor
 
@@ -190,15 +190,15 @@ def process_flow_logs_parallel(flow_file, lookup_dict):
             executor.map(lambda line: process_line(line.strip(), lookup_dict), file)
 ```
 
-🔹 Why?
-- ✅ Makes use of multiple CPU cores
-- ✅ Can process millions of logs faster
+Why?
+-  Makes use of multiple CPU cores
+-  Can process millions of logs faster
 
-### **3️⃣ Using a Trie for Fast Lookup (instead of a Dictionary)**
+### **3. Using a Trie for Fast Lookup (instead of a Dictionary)**
 - If the `lookup.csv` file has **10,000+ mappings**, dictionary lookups **can slow down** as it grows.
 - **Optimized Approach:** Store port-protocol mappings in a **Trie** (prefix tree) for ultra-fast lookups.
 
-🔹 **How?**  
+ **How?**  
 ```python
 class TrieNode:
     def __init__(self):
@@ -232,16 +232,16 @@ lookup_trie.insert("443", "tcp", "web")
 print(lookup_trie.search("443", "tcp"))  # Output: web
 ```
 
-🔹 Why?
-- ✅ Faster than dictionary lookups for large datasets
-- ✅ Memory-efficient when there are many shared prefixes
+ Why?
+-  Faster than dictionary lookups for large datasets
+-  Memory-efficient when there are many shared prefixes
 
-### **4️⃣ Leveraging a Database Instead of In-Memory Lookups**
+### **4. Leveraging a Database Instead of In-Memory Lookups**
 - Instead of keeping everything in **RAM**, use an **indexed database** for **quick searches**.
 - **Optimized Approach:** Store lookup mappings in **SQLite/PostgreSQL with indexing**.
 - Query using **indexed search** instead of iterating over a dictionary.
 
-🔹 **How?** Using SQLite:
+ **How?** Using SQLite:
 ```python
 import sqlite3
 
@@ -267,15 +267,15 @@ def fetch_tag(port, protocol):
     return result[0] if result else "Untagged"
 ```
 
-🔹 Why?
-- ✅ Scalable for millions of mappings
-- ✅ Persistent storage instead of memory-based dictionaries
+ Why?
+-  Scalable for millions of mappings
+-  Persistent storage instead of memory-based dictionaries
 
-### **5️⃣ Advanced Tagging Using Machine Learning**
-🚀 **Take this problem to the next level by implementing a Machine Learning model for tagging!**  
+### **5. Advanced Tagging Using Machine Learning**
+ **Take this problem to the next level by implementing a Machine Learning model for tagging!**  
 - If you have historical flow logs with correct tags, you can train an ML model to **predict the correct tag** for unseen data.
 
-**🔹 How?**
+** How?**
 - Convert `dstport` and `protocol` into **numerical features**.
 - Train a **Decision Tree / Random Forest model** to predict **tags**.
 - Use `sklearn` to train:
@@ -298,6 +298,6 @@ predicted_tag = model.predict([[443, 0]])  # Example: Predict for (443, tcp)
 print(predicted_tag)
 ```
 
-🔹 Why?
-- ✅ Learns patterns from historical data
-- ✅ Can predict new unseen tags without lookup files
+ Why?
+-  Learns patterns from historical data
+-  Can predict new unseen tags without lookup files
